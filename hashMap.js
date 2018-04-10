@@ -99,58 +99,84 @@ function palindrome(string) {
   let dromeHashMap = new HashMap();
   let dromeCheck = string.split('');
 
-  for(let i = 0; i<dromeCheck.length; i++){
-    try{
+  for (let i = 0; i<dromeCheck.length; i++) {
+    try {
       dromeHashMap.get(dromeCheck[i]);
-      dromeHashMap.set(dromeCheck[i],0);
+      dromeHashMap.set(dromeCheck[i], 0);
     }
-    catch(e){
-      dromeHashMap.set(dromeCheck[i],1);
+    catch(e) {
+      dromeHashMap.set(dromeCheck[i], 1);
     }
   }
+
   dromeCheck = [...new Set(dromeCheck)];
   dromeCheck.forEach(letter =>palindromeCount+=dromeHashMap.get(letter));
 
   return palindromeCount<2;
 }
 // ['east', 'cars', 'acre', 'arcs', 'teas', 'eats', 'race']
-function sortPalindrom(words){
-  //use an alphabet hash to assign each
-  // palindrome a value and then sort the vals together
+// gets [['east', 'teas', 'eats'], ['cars', 'arcs'], ['acre', 'race']]
+function sortAnagrams(array) {
+  let letterScores = new HashMap(10);
+  let wordScores = [];
+  let finalGroupings = [];
+  let alphas = 'abcdefghijklmnopqrstuvwxyz';
+  alphas.split('')
+    .forEach((letter,score) => letterScores.set(letter,score));
+  array.forEach(word =>{
+    let wordScore = 0;
+    let currentWord = word.split('');
+    currentWord.forEach(letter => wordScore += letterScores.get(letter));
+    wordScores.push(wordScore);
+  });
+  wordScores.forEach((score,index) =>{
+    let currentGrouping = [];
+    for (let i = index; i<wordScores.length; i++){
+      if(wordScores[i]===score && wordScores[i]!== -1){
+        currentGrouping.push(array[i]);
+        wordScores[i] = -1;
+      }
 
+    }
+    currentGrouping.length >= 1 ? finalGroupings.push(currentGrouping) : false;
+  });
+  return finalGroupings;
 }
 
 function main() {
+//
+//   let lor = new HashMap();
+//   lor.set('Hobbit','Bilbo');
+//   lor.set('Hobbit','Frodo');
+//   lor.set('Wizard','Gandolf');
+//   lor.set('Human','Aragon');
+//   lor.set('Elf','Legolas');
+//   lor.set('Maiar','The Necromancer');
+//   lor.set('Maiar','Sauron');
+//   lor.set('RingBearer','Gollum');
+//   lor.set('LadyLight','Galadriel');
+//   lor.set('HalfElven','Arwen');
+//   lor.set('Ent','Treebeard');
+//
+//   console.log('get on Maiar should return Sauron',lor.get('Maiar'));
+//
+//
+//
+//   // palindrome check
+//   console.log(`==========================
+// Palindrom Check should return
+//   true
+//   false
+//   true
+// for strings add, bobarbob, & rraecca`);
+//   console.log(palindrome('aad'));
+//   console.log(palindrome('bobarbob'));
+//   console.log(palindrome('rraecca'));
 
-  let lor = new HashMap();
-  lor.set('Hobbit','Bilbo');
-  lor.set('Hobbit','Frodo');
-  lor.set('Wizard','Gandolf');
-  lor.set('Human','Aragon');
-  lor.set('Elf','Legolas');
-  lor.set('Maiar','The Necromancer');
-  lor.set('Maiar','Sauron');
-  lor.set('RingBearer','Gollum');
-  lor.set('LadyLight','Galadriel');
-  lor.set('HalfElven','Arwen');
-  lor.set('Ent','Treebeard');
+  let palindromesArray = ['east', 'cars', 'acre', 'arcs', 'teas', 'eats', 'race'];
+  let simplePArray = ['dad','add','ten'];
+  // console.log(sortAnagrams(palindromesArray));
 
-  console.log('get on Maiar should return Sauron',lor.get('Maiar'));
-
-
-
-  // palindrome check
-  console.log(`==========================
-Palindrom Check should return
-  true
-  false
-  true
-for strings add, bobarbob, & rraecca`);
-  console.log(palindrome('add'));
-  console.log(palindrome('bobarbob'));
-  console.log(palindrome('rraecca'));
-
-  let palindrom
 
 }
 
